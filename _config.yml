@@ -4,8 +4,8 @@ email: 418648118@qq.com
 description: "一个普通的博客"
 baseurl: ""
 url: "http://carte-noire.jacobtomlinson.co.uk/"
-title_description: "测试语句"
-title_image: "{{ site.baseurl }}/favicons/apple-touch-icon-57x57.png"
+title_description: "一个普通的博客"
+title_image: ".\_data\cat.jpg"
 google_analytics: "UA-20365477-4"
 disqus_account: cartenoire
 github_repository: https://github.com/jacobtomlinson/carte-noire
