@@ -1,11 +1,11 @@
 # Site settings
 title: "小r的博客"
 email: 418648118@qq.com
-description: "一个普通的博客"
+description: "测试"
 baseurl: ""
 url: "http://carte-noire.jacobtomlinson.co.uk/"
-title_description: "一个普通的博客"
-title_image: ".\_data\cat.jpg"
+title_description: "测试"
+title_image: "{{ site.baseurl }}\images\cat.jpg"
 google_analytics: "UA-20365477-4"
 disqus_account: cartenoire
 github_repository: https://github.com/jacobtomlinson/carte-noire
