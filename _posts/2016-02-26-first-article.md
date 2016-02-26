@@ -1,8 +1,8 @@
 ---
 layout: post
-title:  "第一篇文章"
+title:  "JavaScript 作用域和作用域链"
 date:   2016-02-26 15:05:00
-categories: Front-end 
+categories: Front-end JavaScript
 excerpt: 无
 ---
 * content
