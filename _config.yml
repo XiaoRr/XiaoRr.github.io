@@ -5,7 +5,7 @@ description: "测试"
 baseurl: ""
 url: "http://carte-noire.jacobtomlinson.co.uk/"
 title_description: "测试"
-title_image: "{{ site.baseurl }}/images/cat.jpg"
+title_image: "images/cat.jpg"
 google_analytics: "UA-20365477-4"
 disqus_account: cartenoire
 github_repository: https://github.com/jacobtomlinson/carte-noire
