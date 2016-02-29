@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "有关编程力的思考"
-date:   2016-02-26 15:05:00
+date:   2016-02-29 22:48:00
 categories: 杂谈
 excerpt: 无
 ---
