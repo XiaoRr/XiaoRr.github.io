@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "安卓实机调试不显示logcat"
+title:  "华为安卓实机调试不显示logcat的解决方法"
 date:   2016-03-29
 categories: 安卓
 excerpt: 无
@@ -20,13 +20,18 @@ excerpt: 无
 
 1.在拨号界面输入“\*#\*#2846579#\*#\*
 
-2.找到log选单并打开log。此举会使手机性能下降。
+2.找到log选单并打开log。
 
-### 其他手机
+*此举会使手机性能下降。
 
-1.自行百度 手机品牌/系统 + 打开logcat
+### 小米手机（待测试）
 
-### 万能
+在电脑上找到 .Android文件夹，win下在C:\Users\dell\.android，mac的就在系统盘根目录下，（可能是隐藏的，我的在win下没有隐藏，mac下是隐藏的）
+在这个文件夹里找到adb_usb.ini这个文件，打开在里面添加 0x2717 重启一下logcat。
+
+如果找到不这个文件，新建一个，然后添加0x2717 重启logcat。
+
+### 万能法（待测试）
 
 1.打开logcat，并设置level，执行命令如下
 
@@ -47,6 +52,8 @@ excerpt: 无
 > adb start-server
 
 * 参考：[Android手机调试无法查看logcat](http://blog.csdn.net/huqingwei0824/article/details/6858159)
+
+* 参考：[关于小米手机连接电脑，不能查看logcat日志的解决方法](http://blog.sina.com.cn/s/blog_6b3661a90101887l.html)
 
 
 
