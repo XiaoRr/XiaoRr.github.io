@@ -20,3 +20,4 @@ excerpt: 无
 
 - [LINQ](http://www.cnblogs.com/lifepoem/archive/2011/12/16/2288017.html)  难度：☆☆☆☆
 
+- [C#6.0新特性概览](http://www.cnblogs.com/henryzhu/p/new-feature-in-csharp-6.html)  难度：☆☆☆
