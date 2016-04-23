@@ -111,4 +111,15 @@ AS的默认界面就有一个actionBar，后来要为ActionBar加上返回按钮
 
 ## 遗留问题
 
+需要指出的是，想让返回按钮出现，必须在manifests里的AndroidMainfest页面指出其父页面
+
+例
+
+	<activity
+	android:name=".HomeworkOne"
+	android:label="作业一"
+	android:parentActivityName=".MainActivity" >
+
+即作业一的父页面是MainActivity.
+
 即使返回不借助parentActivityName属性，在xml里依然要补完这个属性，令人不太愉悦。目前尚未解决。

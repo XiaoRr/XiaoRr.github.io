@@ -10,6 +10,8 @@ excerpt: 无
 
 ## 基础
 
+### [安卓应该安装哪些sdk?](https://www.zhihu.com/question/31935836)
+
 ### [安卓开发规范](http://www.cnblogs.com/xiongbo/archive/2011/08/15/2098130.html)
 
 ### [安卓编码规范](http://blog.csdn.net/stefzeus/article/details/6425642)
