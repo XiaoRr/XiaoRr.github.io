@@ -122,4 +122,6 @@ AS的默认界面就有一个actionBar，后来要为ActionBar加上返回按钮
 
 即作业一的父页面是MainActivity.
 
-即使返回不借助parentActivityName属性，在xml里依然要补完这个属性，令人不太愉悦。目前尚未解决。
+即使返回不借助parentActivityName属性，在xml里依然要补完这个属性。
+
+在最后写的类中，即把跳转回父页面的默认设定改成了“返回”设定，但是不添加以上属性的话，返回按钮仍然不会出现。目前尚未解决。
