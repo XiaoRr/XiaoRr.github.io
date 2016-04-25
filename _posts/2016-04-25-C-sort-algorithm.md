@@ -30,6 +30,9 @@ excerpt: 无
 	using namespace std;
 
 
+	/**
+	* 快速排序
+	*/
 	void quickSort(int* left,int* right)
 	{
 		if(left >= right)return ;
@@ -50,7 +53,7 @@ excerpt: 无
 	}
 
 	/**
-	*优化冒泡排序
+	* 优化冒泡排序
 	*/
 	void bubbleSort(int* left,int* right)
 	{
@@ -66,7 +69,7 @@ excerpt: 无
 		}
 	}
 	/**
-	*归并排序(最大支持1e7)
+	* 归并排序(最大支持1e7)
 	*/
 	int tmp[10000000];
 	void mergeSort(int *left,int *right){
@@ -84,7 +87,7 @@ excerpt: 无
 	}
 
 	/**
-	*插入排序
+	* 插入排序
 	*/
 	void insertSort(int *left,int *right){
 		for(int *i=left+1;i<right;i++)
@@ -93,7 +96,7 @@ excerpt: 无
 	}
 
 	/**
-	*随机数创建
+	* 随机数创建
 	*/
 	void createData(int *left,int *right){
 		srand(time(NULL));
@@ -103,7 +106,7 @@ excerpt: 无
 	}
 
 	/**
-	*小范围测试用输出
+	* 小范围测试用输出
 	*/
 	void print(int *left,int *right){
 		int cnt = 0;
@@ -113,7 +116,7 @@ excerpt: 无
 	}
 
 	/**
-	*测试用正确性检查
+	* 测试用正确性检查
 	*/
 	bool isOrder(int *left,int *right){
 		for(int *i= left+1;i<right;i++){
