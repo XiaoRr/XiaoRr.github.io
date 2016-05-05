@@ -10,7 +10,7 @@ description: filled with determination.
 # baseurl: "" # the subpath of your site, e.g. /blog/
 # url: "http://yourdomain.com" # the base hostname & protocol for your site
 # twitter_username: jekyllrb
-github_username: XiaoR
+github_username: XiaoRr
 permalink: /:year/:month/:day/:title/
 
 # Build settings
