@@ -2,7 +2,7 @@
 layout: post
 title:  "算法-求最远/近曼哈顿距离"
 date:   2016-11-09
-categories:算法
+categories: 算法
 excerpt: 无
 ---
 * content
@@ -47,7 +47,7 @@ stl中的set使用的是红黑树，非常适合完成这个任务
 
 以下是例题
 
-:![](pic/2016-11-22.png)
+![](pic/2016-11-22.png)
 
 代码如下
 
