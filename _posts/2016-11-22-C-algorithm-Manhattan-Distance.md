@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "求动态最远/近曼哈顿距离"
-date:   2016-11-09
+date:   2016-11-22
 categories: 算法
 tags: 图论
 author: XiaoR

@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "写在更新博客之后"
-date:   2016-11-09
+date:   2016-11-23
 categories: 杂谈
 tags: 日常
 author: XiaoR
