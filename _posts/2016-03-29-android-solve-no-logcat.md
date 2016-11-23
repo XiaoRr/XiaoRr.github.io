@@ -3,10 +3,16 @@ layout: post
 title:  "华为安卓实机调试不显示logcat的解决方法"
 date:   2016-03-29
 categories: 安卓
-excerpt: 无
+author: XiaoR
 ---
 * content
 {:toc}
+
+
+
+
+
+
 
 ## 问题
 

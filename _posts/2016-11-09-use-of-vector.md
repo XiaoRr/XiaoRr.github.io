@@ -3,7 +3,7 @@ layout: post
 title:  "数组的多种用法与理解"
 date:   2016-11-09
 categories: 算法
-tags: 基础
+tags: 编程技巧
 author: XiaoR
 ---
 * content

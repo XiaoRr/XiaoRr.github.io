@@ -3,10 +3,15 @@ layout: post
 title:  "【转】安卓color.xml文件"
 date:   2016-03-31
 categories: 安卓
-excerpt: 无
+author: 立崖
 ---
 * content
 {:toc}
+
+
+
+
+
 
 转自：[android color.xml](http://blog.sina.com.cn/s/blog_4e60b09d01015jcp.html)
 

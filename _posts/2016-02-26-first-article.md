@@ -3,7 +3,8 @@ layout: post
 title:  "第一篇博客"
 date:   2016-02-26 15:05:00
 categories: 杂谈
-excerpt: 无
+tags: 日常
+author: XiaoR
 ---
 * content
 {:toc}
@@ -11,6 +12,12 @@ excerpt: 无
 ## 搭建博客的方法
 
 感谢[傻瓜都可以利用github pages建博客](http://cyzus.github.io/2015/06/21/github-build-blog/)，我的第一个自己搭的博客就这样完成了。
+
+
+
+
+
+
 
 以及感谢高浩洋的jekyll模板，很简洁（但是里面代码量不小……），有些东西我还没能力修改。
 
