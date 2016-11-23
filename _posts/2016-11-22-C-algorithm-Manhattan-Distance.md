@@ -1,22 +1,25 @@
 ---
 layout: post
-title:  "算法-求最远/近曼哈顿距离"
+title:  "求动态最远/近曼哈顿距离"
 date:   2016-11-09
 categories: 算法
-excerpt: 无
+tags: 图论
+author: XiaoR
 ---
 * content
 {:toc}
 
 ## 介绍
 
-曼哈顿距离是两点在南北方向上的距离加上在东西方向上的距离，即
-
-* d(i，j)=｜xi-xj｜+｜yi-yj｜
+曼哈顿距离是两点在南北方向上的距离加上在东西方向上的距离，即d(i，j)=｜xi-xj｜+｜yi-yj｜
 
 这个计算的特点是迅速，不会有误差。被广泛用于计算机当中。
 
-曼哈顿距离可以拓展到一维，以及更高的维度.
+曼哈顿距离可以拓展到一维，以及更高的维度。
+
+
+
+
 
 ## 解法
 
@@ -51,71 +54,73 @@ stl中的set使用的是红黑树，非常适合完成这个任务
 
 以下是例题
 
-![例题](../pic/2016-11-22.png)
+![例题](http://xcoder.cc/pic/2016-11-22.png)
 
 代码如下
 
-	#include <iostream>
-	#include <cstdio>
-	#include <set>
-	using namespace std;
+```c
+#include <iostream>
+#include <cstdio>
+#include <set>
+using namespace std;
 
-	int t[32][100005];
-	multiset<int> s[32];
-	int status,n,p;
+int t[32][100005];
+multiset<int> s[32];
+int status,n,p;
 
-	void Answer(int z){
-		int Max = 0;
-		for(int i=0;i<status>>1;i++){
-			multiset<int>::iterator it1 = --s[i].end(),it2 = --s[status-i-1].end();
-			Max = max(Max,*it1+*it2);
-			//cout<<"i="<<i<<" end="<<*it1 <<" "<<*it2<<endl;
-		}
-		cout<<Max<<endl;
+void Answer(int z){
+	int Max = 0;
+	for(int i=0;i<status>>1;i++){
+		multiset<int>::iterator it1 = --s[i].end(),it2 = --s[status-i-1].end();
+		Max = max(Max,*it1+*it2);
+		//cout<<"i="<<i<<" end="<<*it1 <<" "<<*it2<<endl;
 	}
-	int main(){
-		scanf("%d%d",&n,&p);
-		status = 1<<p;
-		for(int z=0;z<n;z++){
-			int cas;
-			scanf("%d",&cas);
-			if(cas==0){
-				int tmp[5];
-				for(int i=0;i<p;i++){
-					scanf("%d",&tmp[i]);
-				}
-				for(int i=0;i<status;i++){
-					t[i][z] = 0;
-					for(int j=0;j<p;j++){
-						t[i][z] += (i&(1<<j))?tmp[j]:-tmp[j];
-					}
-					//cout<<"i="<<i<<" t[i][z]="<<t[i][z]<<endl;
-					s[i].insert( t[i][z] );
-				}
-				Answer(z);
+	cout<<Max<<endl;
+}
+int main(){
+	scanf("%d%d",&n,&p);
+	status = 1<<p;
+	for(int z=0;z<n;z++){
+		int cas;
+		scanf("%d",&cas);
+		if(cas==0){
+			int tmp[5];
+			for(int i=0;i<p;i++){
+				scanf("%d",&tmp[i]);
 			}
-			if(cas==1){
-				int c;
-				scanf("%d",&c);
-				for(int i=0;i<status;i++){
-					//cout<<"del"<<"i="<<i<<" "<<t[i][c-1]<<endl;
-					s[i].erase(s[i].find(t[i][c-1]));
+			for(int i=0;i<status;i++){
+				t[i][z] = 0;
+				for(int j=0;j<p;j++){
+					t[i][z] += (i&(1<<j))?tmp[j]:-tmp[j];
 				}
-				Answer(z);
+				//cout<<"i="<<i<<" t[i][z]="<<t[i][z]<<endl;
+				s[i].insert( t[i][z] );
 			}
+			Answer(z);
+		}
+		if(cas==1){
+			int c;
+			scanf("%d",&c);
+			for(int i=0;i<status;i++){
+				//cout<<"del"<<"i="<<i<<" "<<t[i][c-1]<<endl;
+				s[i].erase(s[i].find(t[i][c-1]));
+			}
+			Answer(z);
 		}
 	}
+}
 
-	/**
-	10 2
-	0 208 403
-	0 371 -180
-	1 2
-	0 1069 -192
-	0 418 -525
-	1 5
-	1 1
-	0 2754 635
-	0 -2491 961
-	0 2954 -2516
-	*/
+/**
+10 2
+0 208 403
+0 371 -180
+1 2
+0 1069 -192
+0 418 -525
+1 5
+1 1
+0 2754 635
+0 -2491 961
+0 2954 -2516
+*/
+```

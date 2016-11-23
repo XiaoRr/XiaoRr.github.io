@@ -3,10 +3,15 @@ layout: post
 title:  "修改Android Studio Logcat的颜色"
 date:   2016-04-15
 categories: 安卓
-excerpt: 无
+tags: IDE
+author: XiaoR
 ---
 * content
 {:toc}
+
+
+
+
 
 ## 颜色设置
 

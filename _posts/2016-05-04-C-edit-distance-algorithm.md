@@ -2,8 +2,9 @@
 layout: post
 title:  "动态规划入门题-编辑距离的简易分析"
 date:   2016-05-04
-categories: c/c++ 算法
-excerpt: 无
+categories: 算法
+tags: 动态规划
+author: XiaoR
 ---
 * content
 {:toc}
@@ -19,6 +20,10 @@ excerpt: 无
 * 将一个字符改为另一个字符
 
 将字符串A变换为字符串B所用的最少字符操作数称为字符串A到B的编辑距离，记为d(A, B)。对于给定的2个字符串A和B，要求计算它们的编辑距离d(A, B)。
+
+
+
+
 
 ---
 
@@ -45,31 +50,33 @@ excerpt: 无
 
 代码如下
 
-	#include <iostream>
-	#define min(A,B,C) min(A,(B,C))
-	using namespace std;
+```c
+#include <iostream>
+#define min(A,B,C) min(A,(B,C))
+using namespace std;
 
-	int dp[1007][1007];
-	int main(){
-		//freopen("input.txt","r",stdin);
-		//freopen("output.txt","w",stdout);
-		string s1,s2;
-		while(cin>>s1>>s2){
-			int alen = s1.length(), blen = s2.length();
-			for(int i=0;i<1007;i++)
-				dp[0][i]=dp[i][0]=i;
-			for(int i=1;i<=alen;i++){
-				for(int j=1;j<=blen;j++){
-					dp[i][j]=min(
-						dp[i-1][j]+1,
-						dp[i][j-1]+1,
-						dp[i-1][j-1]+(s1[i-1]==s2[j-1] ? 0:1)
-					);
-				}
+int dp[1007][1007];
+int main(){
+	//freopen("input.txt","r",stdin);
+	//freopen("output.txt","w",stdout);
+	string s1,s2;
+	while(cin>>s1>>s2){
+		int alen = s1.length(), blen = s2.length();
+		for(int i=0;i<1007;i++)
+			dp[0][i]=dp[i][0]=i;
+		for(int i=1;i<=alen;i++){
+			for(int j=1;j<=blen;j++){
+				dp[i][j]=min(
+					dp[i-1][j]+1,
+					dp[i][j-1]+1,
+					dp[i-1][j-1]+(s1[i-1]==s2[j-1] ? 0:1)
+				);
 			}
-			cout<<"A=" <<s1 << " B=" <<s2 <<" min distance="<<dp[alen][blen]<<endl;
 		}
+		cout<<"A=" <<s1 << " B=" <<s2 <<" min distance="<<dp[alen][blen]<<endl;
 	}
+}
+```
 
 ---
 

@@ -2,8 +2,9 @@
 layout: post
 title:  "数组的多种用法与理解"
 date:   2016-11-09
-categories: 基础 算法
-excerpt: 无
+categories: 算法
+tags: 基础
+author: XiaoR
 ---
 * content
 {:toc}
@@ -22,12 +23,19 @@ excerpt: 无
 
 这个映射关系的好处是，查询a[n]的值，这个步骤的速度是极快的。如果有某种数据映射需要大量查询，数组或许是个好方法。
 
+
+
+
+
+
 举个最简单的例子，假如一个程序需要频繁调用(1<<i)的值(<<是c语言里的左移运算符),那么我提前写一个a[n]的数组，并提前写好以下运算：
 
-    for(int i=0;i<n;i++){
-        a[i] = 1<<n;
-    }
-    
+```c
+for(int i=0;i<n;i++){
+	a[i] = 1<<n;
+}
+```    
+
 如此一来，每次只需调用a[i]即可知道1<<i的值，当然，1<<i的速度和a[i]差不多，但是面对更复杂的运算时，后者就会相当有效。
 
 例
@@ -35,19 +43,21 @@ excerpt: 无
 
 我给出下面一份类c的伪代码
 
-    function bool is(a){
-        bool h[10];
-        for(;a!=0;a/=10){
-            h[a%10] = true;
-        }
-        
-        for(int i=0;i<10;i++){
-            if(!h[i]){
-                return false;
-            }
-        }
-        return true;
-    }
+```c
+function bool is(a){
+	bool h[10];
+	for(;a!=0;a/=10){
+		h[a%10] = true;
+	}
+	
+	for(int i=0;i<10;i++){
+		if(!h[i]){
+			return false;
+		}
+	}
+	return true;
+}
+```
     
 这里用到了一些小技巧，比如如何优雅的取出这个十位数的每一位数字，当然，如果你用string读取了它,那么这一步就变成了简单的循环。
 
