@@ -103,7 +103,7 @@ String trim()  //去除两侧的空白符，中间的不会去除
 
 ## String使用指南
 
-摘自：[java中String的用法](http://blog.sina.com.cn/s/blog_a7b7d05201013u1w.html)，为满足markdown格式有排版修改
+摘自：[Java 中String类的终极总结](http://blog.csdn.net/hakunamatata2008/article/details/3961952)，为满足markdown格式有排版修改
 
 ### 不变模式
 
