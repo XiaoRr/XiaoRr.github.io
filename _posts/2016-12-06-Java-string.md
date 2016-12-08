@@ -9,7 +9,7 @@ author: XiaoR
 * content
 {:toc}
 
-Java的String类，乃至各种高级语言中的String类，几乎被当做一种基本类来看待，其本质是char型的数组。
+Java的String类，乃至各种高级语言中的String类，几乎被当做一种基本类来看待，其本质是以`final`修饰的char型的数组。
 
 本文将会从2方面解读String：String提供的优雅的函数，以及String内部构造的理解。
 
@@ -20,9 +20,9 @@ Java的String类，乃至各种高级语言中的String类，几乎被当做一�
 
 ## String方法列表
 
-摘自java api 7.0的大量方法，虽然用途狭窄，但是一旦用上就会很简洁。
+摘自java api 7.0的大量方法，虽然有些用途狭窄，但是一旦用上就会很简洁。
 
-String类位于java.lang.String，父类是java.lang.Object
+String类位于java.lang.String，父类是java.lang.Object。
 
 ### 获取类
 
@@ -112,7 +112,7 @@ String trim()  //去除两侧的空白符，中间的不会去除
 ```java
 String str1="hello";//创建一个对象hello，不会变；
 System.out.println(str1);
-str1+=" world!";//两个字符串对象粘粘，系统其实创建了一个新的对象，把Str1的指向改了，指向新的对象；hello就                     //变成了垃圾；
+str1+=" world!";//两个字符串对象粘粘，系统其实创建了一个新对象，把Str1的指向改向新的对象；hello就变成了垃圾；
 System.out.println(str1);
 //如果一直这样创建会影响系统的效率；要频繁的改变字符串对象的值就用StringBuffer来描述；
 StringBuffer sb=new StringBuffer("[");
@@ -190,3 +190,81 @@ System.out.println(sb);
 String str = sb.toString();//把"[hehe]"，赋值给一个字符串对象str
 ```
 
+### 为何要采取不变模式
+
+改自[如何理解 String 类型值的不可变？ - 回答作者: 胖胖](http://zhihu.com/question/20618891/answer/114125846)
+
+```java
+public final class String implements java.io.Serializable, Comparable<String>, CharSequence {
+    /** String本质是个char数组. 而且用final关键字修饰.*/
+    private final char value[];
+	...
+	...
+}
+```
+
+在上面的结构中我们可以一目了然的看见String不变性的原因，`final`甚至将继承的道路都锁死了，再加上代码没有提供任何直接修改这个数组的方法，成功实现了String的不变性。
+
+不变模式的代价在于其无法简单的修改String内元素的值，就算是一个简单的加操作也会消耗大量的资源。
+
+但是其优点在于[b]安全[/b]，在下面的例子中，假如String具有可变的形式（如`StringBuilder`），就有可能因为程序员的无意而导致其本身值的改变。
+
+```java
+class Test{
+    //不可变的String
+    public static String appendStr(String s){
+        s+="bbb";
+        return s;
+    }
+
+    //可变的StringBuilder
+    public static StringBuilder appendSb(StringBuilder sb){
+        return sb.append("bbb");
+    }
+
+    public static void main(String[] args){
+        //String做参数
+        String s=new String("aaa");
+        String ns=Test.appendStr(s);
+        System.out.println("String aaa >>> "+s.toString());
+
+        //StringBuilder做参数
+        StringBuilder sb=new StringBuilder("aaa");
+        StringBuilder nsb=Test.appendSb(sb);
+        System.out.println("StringBuilder aaa >>> "+sb.toString());
+    }
+}
+
+//Output: 
+//String aaa >>> aaa
+//StringBuilder aaa >>> aaabbb
+```
+
+下面这个例子更是直接破坏了hash的键值唯一性
+
+```java
+//可变类型做键值的风险
+class Test{
+    public static void main(String[] args){
+        HashSet<StringBuilder> hs=new HashSet<StringBuilder>();
+        StringBuilder sb1=new StringBuilder("aaa");
+        StringBuilder sb2=new StringBuilder("aaabbb");
+        hs.add(sb1);
+        hs.add(sb2);    //这时候HashSet里是{"aaa","aaabbb"}
+
+        StringBuilder sb3=sb1;
+        sb3.append("bbb");  //这时候HashSet里是{"aaabbb","aaabbb"}
+        System.out.println(hs);
+    }
+}
+//Output:
+//[aaabbb, aaabbb]
+```
+
+此外，String在不可变的情况下，也保证了多个线程同时读取时不出错（线程安全），以及可共用同一个字符串常量池（内存优化）
+
+而其修改不易的缺陷可交由StringBuilder解决。
+
+-----------------
+
+综上，String是一个非常优雅的数据类型，希望你能优雅的使用它。
