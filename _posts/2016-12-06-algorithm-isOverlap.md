@@ -9,7 +9,7 @@ author: XiaoR
 * content
 {:toc}
 
-判断两个区间[a.start,a.end])和[b.start,b.end]是否有重叠部分的方法
+判断两个区间[a.start,a.end]和[b.start,b.end]是否有重叠部分的方法
 
 
 
