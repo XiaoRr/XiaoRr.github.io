@@ -50,24 +50,27 @@ author: XiaoR
 
 资源文件只能用流的方式调用，因此将其转为文件流直接写入。
 
-	MemoryStream i = new MemoryStream(资源文件.Terraria);
-	var o = File.Open(path + "\\terraria.exe", FileMode.Create);
-	CopyStream(i, o);
+```c#
+MemoryStream i = new MemoryStream(资源文件.Terraria);
+var o = File.Open(path + "\\terraria.exe", FileMode.Create);
+CopyStream(i, o);
+```
 	
 CopyStream:
 
-	public static void CopyStream(Stream i, Stream o)
+```c#
+public static void CopyStream(Stream i, Stream o)
+{
+	byte[] b = new byte[32768];
+	while (true)
 	{
-		byte[] b = new byte[32768];
-		while (true)
-		{
-			int r = i.Read(b, 0, b.Length);
-			if (r <= 0)
-				return;
-			o.Write(b, 0, r);
-		}
+		int r = i.Read(b, 0, b.Length);
+		if (r <= 0)
+			return;
+		o.Write(b, 0, r);
 	}
-	
+}
+```
 解决这个已经没什么难点了。替换文件后，成功获得了一份汉化版的terraria。
 
 -----------
