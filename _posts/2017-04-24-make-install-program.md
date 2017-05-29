@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  制作简单的安装程序
-date:   2017-03-13
+date:   2017-04-24
 categories: c#
 tags: 小工具
 author: XiaoR
