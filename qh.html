@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+    <head>
+        <!-- 声明当前页面的编码集：charset=gbk,gb2312(中文编码) , utf-8(国际编码) -->
+        <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+        <!-- 声明当前页面的三元素 -->
+        <title>雀魂安定段计算</title>
+        <meta name='keywords' content='雀魂,安定段'>
+        <meta name='description' content='煞有介事的雀魂安定段计算v0.1'>
+ 
+        <!-- js/css -->
+        
+        <script type="text/javascript">
+            function cal()
+            {
+                //整个算法只考虑东南场
+                var first=document.getElementById('1st').value/100;
+                var second=document.getElementById('2nd').value/100;
+                var third=document.getElementById('3rd').value/100;
+                var forth=document.getElementById('4th').value/100;
+                //第四名的扣分
+                var forthScore=[0,0,0,-20,-40,-60,-80,-100,-120,-165,180,-195,-210,-225,-240,-255];
+                var level=['初心','雀士','雀杰','雀豪','雀圣','魂天'];
+                //雀魂pt计算为 (结算点数-25000)/1000+马点+段位分
+                //这里脑补4人平均分数为4w 3w 2w 1w 因为没有合适的数据，如果有我会修改
+                //然后再考虑到马点为+15 +5 -5 -15 与上一条累计得修正为+30 +10 -10 -30
+                //各个场的算分
+                var score=[
+                    [20,10,0],  //铜
+                    [40,20,0],  //银
+                    [80,40,0],  //金
+                    [110,55,0], //玉
+                    [120,60,0]  //王座
+                ];
+                //将马点和pt修正上
+                for(i in forthScore){
+                    forthScore[i]-=30;
+                }
+                for(i in score){
+                    score[i][0]+=30;
+                    score[i][1]+=10;
+                    score[i][2]-=10;
+                }
+                //获取玩家所在场地
+                var obj = document.getElementsByName("pos");
+                var pos;
+                for(var i=0; i<obj.length; i++){
+                    if(obj[i].checked){
+                        pos = i;
+                    }
+                }
+                //console.log(pos);
+                //对于每个场地，对六种段位进行依次模拟，直到找到找到合适段位
+                var avg = (first+second*2+third*3+forth*4)/(first+second+third+forth);
+                document.getElementById('ans2').innerText="平均顺位："+avg.toFixed(2);
+
+                var over = true;
+                for(var i=0;i<6;i++){
+                    var value = first*score[pos][0] + second*score[pos][1] + third*score[pos][2] + forth*forthScore[pos*3+i];
+                    if(value<0){
+                        document.getElementById('ans').innerText="您当前战绩最高可达到" + level[pos+parseInt(i/3)] +(i%3+1);
+                        over=false;
+                        break;
+                    }
+                    //console.log(score[pos][0],)
+                    console.log(value);
+                }
+                if(over==true){
+                    document.getElementById('ans').innerText="已经超出当前场地所允许的最高段位("+level[pos+1]+"3以上)";
+                }
+            }
+        </script>
+<body>
+    场地：
+    <form>
+        <input type="radio"  name ="pos" value="0" checked>铜之间
+        <input type="radio"  name ="pos" value="1">银之间
+        <input type="radio"  name ="pos" value="2">金之间
+        <input type="radio"  name ="pos" value="3">玉之间
+    </form>
+    <div>
+        一位率<input type="text" id="1st" value="25">%
+    </div>
+    <div>
+        二位率<input type="text" id="2nd" value="25">%
+    </div>
+    <div>
+        三位率<input type="text" id="3rd" value="25">%
+    </div>
+    <div>
+        四位率<input type="text" id="4th" value="25">%
+    </div>
+    <input type="button" onclick="return cal()" value="计算">
+    
+    <div id="ans" font color="#00ff00">结果</div>
+    <div id="ans2" font color="#0000ff"></div>
+
+    <br>
+    说明：<br>
+    1.如果你的数据被前面比较低段位的场次污染了，请尝试脑补正确的数据。<br>
+    2.最后显示结果为你在该场能打到的最高段位。<br>
+    3.你可以尝试输入粗略的数据，比如相加不等于100的数据。
+ </body>
+</html>
