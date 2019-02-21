@@ -4,13 +4,18 @@
         <!-- 声明当前页面的编码集：charset=gbk,gb2312(中文编码) , utf-8(国际编码) -->
         <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
         <!-- 声明当前页面的三元素 -->
-        <title>雀魂安定段计算</title>
+        <title>雀魂安定段计算v0.2</title>
         <meta name='keywords' content='雀魂,安定段'>
-        <meta name='description' content='煞有介事的雀魂安定段计算v0.1'>
+        <meta name='description' content='煞有介事的雀魂安定段计算v0.2'>
  
         <!-- js/css -->
         
         <script type="text/javascript">
+            function addTd(tr,str){
+                var td = document.createElement("td");
+                td.appendChild(document.createTextNode(str));
+                tr.appendChild(td);
+            }
             function cal()
             {
                 //整个算法只考虑东南场
@@ -19,8 +24,12 @@
                 var third=document.getElementById('3rd').value/100;
                 var forth=document.getElementById('4th').value/100;
                 //第四名的扣分
-                var forthScore=[0,0,0,-20,-40,-60,-80,-100,-120,-165,180,-195,-210,-225,-240,-255];
+                var forthScore=[0,0,0,-20,-40,-60,-80,-100,-120,-165,-180,-195,-210,-225,-240,-255];
+                //升级所需pt
+                var levelUpPt=[20,80,200,300,400,500,600,700,1000,1400,1600,1800,2000,3000,4500];
                 var level=['初心','雀士','雀杰','雀豪','雀圣','魂天'];
+                //不同段位难度用颜色表示
+                var color=['#FE4365','#FC9D9A','#F9CDAD','#C8C8A9','#83AF9B'];
                 //雀魂pt计算为 (结算点数-25000)/1000+马点+段位分
                 //这里脑补4人平均分数为4w 3w 2w 1w 因为没有合适的数据，如果有我会修改
                 //然后再考虑到马点为+15 +5 -5 -15 与上一条累计得修正为+30 +10 -10 -30
@@ -49,28 +58,91 @@
                         pos = i;
                     }
                 }
-                //console.log(pos);
-                //对于每个场地，对六种段位进行依次模拟，直到找到找到合适段位
+
+                //额外增加部分：显示六个段位的详细信息
+                var table = document.getElementById("detail");
+                
+                var childs = table.childNodes; 
+                for(var i = childs .length - 1; i >= 0; i--) {
+                    table.removeChild(childs[i]);
+                }
+				var tr = document.createElement("tr");
+                //表头
+                var head = ["段位","一位pt","二位pt","三位pt","四位pt","单局对战期望pt","升段要求pt","升段所需场数"];
+                var tr = document.createElement("tr");                
+                for(var i=0;i<head.length;i++){
+                    var td = document.createElement("td");
+                    td.appendChild(document.createTextNode(head[i]));
+                    tr.appendChild(td);
+                }
+                table.appendChild(tr);
+                
+                //对于每个场地，对六种段位进行依次模拟，直到找到找到合适段位(顺便填个表)
                 var avg = (first+second*2+third*3+forth*4)/(first+second+third+forth);
                 document.getElementById('ans2').innerText="平均顺位："+avg.toFixed(2);
-
                 var over = true;
                 for(var i=0;i<6;i++){
+                    var tr = document.createElement("tr");                
                     var value = first*score[pos][0] + second*score[pos][1] + third*score[pos][2] + forth*forthScore[pos*3+i];
-                    if(value<0){
+                    if(value<=0 && over){
                         document.getElementById('ans').innerText="您当前战绩最高可达到" + level[pos+parseInt(i/3)] +(i%3+1);
                         over=false;
-                        break;
                     }
-                    //console.log(score[pos][0],)
+                    //下面这部分是填表环节
+                    addTd(tr,level[pos+parseInt(i/3)]+(i%3+1));
+                    addTd(tr,first*score[pos][0]);
+                    addTd(tr,second*score[pos][1]);
+                    addTd(tr,third*score[pos][2]);
+                    addTd(tr,forth*forthScore[pos*3+i]);
+                    addTd(tr,value);
+                    addTd(tr,levelUpPt[pos+i]);
+                    var tmp = (levelUpPt[pos+i]/value).toFixed(1);
+                    if(tmp<=0 || tmp==Infinity ){
+                        tmp = '---';
+                        tr.style.color = color[0];
+                    }
+                    else if(tmp > 100){
+                        tr.style.color = color[1];
+                    }
+                    else if(tmp > 50){
+                        tr.style.color = color[2];
+                    }
+                    else if(tmp > 15){
+                        tr.style.color = color[3];
+                    }
+                    else {
+                        tr.style.color = color[4];
+                    }
+                    addTd(tr,(tmp>=0 && tmp!=Infinity)?tmp:'---');
+                    table.appendChild(tr);
+                    
                     console.log(value);
                 }
                 if(over==true){
                     document.getElementById('ans').innerText="已经超出当前场地所允许的最高段位("+level[pos+1]+"3以上)";
                 }
+
+/*
+				for(var i = 0; i < 6; i++) {
+					var tr = document.createElement("tr");
+					for(var j=0;j<7;j++) {
+						var td = document.createElement("td");
+                        switch(j){
+                            case 0:
+                                var td=""
+                        }
+						td.appendChild(document.createTextNode("12"));
+						// 7、追加td
+						tr.appendChild(td);
+					}
+					// 循环结束，就得到一个行
+					// 将行追加到table
+					table.appendChild(tr);
+                }
+                */
             }
         </script>
-<body>
+<body style="background:#F8F8FF">
     场地：
     <form>
         <input type="radio"  name ="pos" value="0" checked>铜之间
@@ -95,6 +167,9 @@
     <div id="ans" font color="#00ff00">结果</div>
     <div id="ans2" font color="#0000ff"></div>
 
+    <table id="detail">
+
+    </table>
     <br>
     说明：<br>
     0.该网页是一晚上摸出来的，非常粗糙。<br>
