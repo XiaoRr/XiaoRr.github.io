@@ -95,8 +95,8 @@
                     addTd(tr,(third*score[pos][2]).toFixed(2));
                     addTd(tr,(forth*forthScore[pos*3+i]).toFixed(2));
                     addTd(tr,value.toFixed(2));
-                    addTd(tr,levelUpPt[pos+i]);
-                    var tmp = (levelUpPt[pos+i]/value).toFixed(1);
+                    addTd(tr,levelUpPt[pos*3+i]);
+                    var tmp = (levelUpPt[pos*3+i]/value).toFixed(1);
                     if(tmp<=0 || tmp==Infinity ){
                         tmp = '---';
                         tr.style.color = color[0];
