@@ -1,0 +1,111 @@
+<!doctype html>
+<html>
+
+<head>
+    <!-- 声明当前页面的编码集：charset=gbk,gb2312(中文编码) , utf-8(国际编码) -->
+    <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+    <!-- 声明当前页面的三元素 -->
+    <title>sql快速替换v0.1</title>
+    <meta name='keywords' content='sql'>
+    <meta name='description' content='个人使用'>
+
+    <!-- js/css -->
+
+    <script type="text/javascript">
+        function zero() {
+            document.getElementById('pass').value = '000';
+        }
+        function selfAdd() {
+            var pass = parseInt(document.getElementById('pass').value);
+            var num = parseInt(document.getElementById('num').value);
+            a = Math.floor(pass / 100);
+            b = Math.floor(pass / 10 % 10);
+            c = Math.floor(pass % 10) + 1;
+            if (c >= num) {
+                b += 1;
+                c %= num;
+            }
+            if (b >= num) {
+                a += 1;
+                b %= num;
+            }
+            a %= num;
+            document.getElementById('pass').value = '' + a + b + c;
+            inputP();
+        }
+        function input() {
+            zero();
+            inputP();
+        }
+        function inputP() {
+            var num = parseInt(document.getElementById('num').value);
+            var pass = parseInt(document.getElementById('pass').value);
+            var txt = '';
+            a = Math.floor(pass / 100);
+            b = Math.floor(pass / 10 % 10);
+            c = Math.floor(pass % 10);
+            num1 = Math.ceil(num / 2);
+            num2 = Math.floor(num / 2);
+            for (i = 0; i < num1; i++) {
+                for (j = 0; j < num1; j++) {
+                    cnt = 0;
+                    k = (i + j) % num1;
+                    if (a == i) cnt++;
+                    if (b == j) cnt++;
+                    if (c == k) cnt++;
+                    if (cnt >= 2) {
+                        txt += '<font color="#FF0000">' + i + j + k + ' ' + '</font>';
+                    } else {
+                        txt += ' ' + i + j + k + ' ';
+                    }
+                }
+                txt += '</br>';
+            }
+            for (i = num1; i < num; i++) {
+                for (j = num1; j < num; j++) {
+                    cnt = 0;
+                    k = (i + j - 2 * num1) % num2 + num1;
+                    if (a == i) cnt++;
+                    if (b == j) cnt++;
+                    if (c == k) cnt++;
+                    if (cnt >= 2) {
+                        txt += '<font color="#FF0000">' + i + j + k + ' ' + '</font>';
+                    } else {
+                        txt += ' ' + i + j + k + ' ';
+                    }
+                }
+                txt += '</br>';
+            }
+            document.getElementById('content').innerHTML = txt;
+        }
+        function random(){
+            var num = parseInt(document.getElementById('num').value);
+            document.getElementById('pass').value = ''+parseInt(Math.random()*num)+parseInt(Math.random()*num)+parseInt(Math.random()*num);
+            inputP();
+        }
+
+        var int;
+        function auto(){
+            if(document.getElementById('auto').value == "自动遍历"){
+                int =self.setInterval("selfAdd()",100);
+                document.getElementById('auto').value = "停止遍历";
+            }else{
+                window.clearInterval(int);
+                document.getElementById('auto').value = "自动遍历";
+            }
+        }
+    </script>
+
+<body style="background:#F8F8FF">
+    每一位有多少种数字：<br />
+    <input id="num" rows=20 cols=80 value="10" oninput="input()"></input><br />
+    当前尝试的密码：<br />
+    <input id="pass" rows=20 cols=80 value="000" oninput="inputP()"></input><br />
+    <input type="button" onclick="return zero()" value="清零">
+    <input type="button" onclick="return random()" value="随机">
+    <input type="button" id="auto" onclick="return auto()" value="自动遍历">
+    <input type="button" onclick="return selfAdd()" value="+1"><br>
+    <text id="content"></text>
+</body>
+
+</html>
