@@ -94,17 +94,19 @@
                 document.getElementById('auto').value = "自动遍历";
             }
         }
+        window.onload = inputP()
     </script>
 
 <body style="background:#F8F8FF">
     每一位有多少种数字：<br />
     <input id="num" rows=20 cols=80 value="10" oninput="input()"></input><br />
-    当前尝试的密码：<br />
+    尝试设置一个密码来验证答案能否打开：<br />
     <input id="pass" rows=20 cols=80 value="000" oninput="inputP()"></input><br />
     <input type="button" onclick="return zero()" value="清零">
     <input type="button" onclick="return random()" value="随机">
     <input type="button" id="auto" onclick="return auto()" value="自动遍历">
     <input type="button" onclick="return selfAdd()" value="+1"><br>
+    下面是问题的答案：
     <text id="content"></text>
 </body>
 
