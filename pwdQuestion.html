@@ -94,6 +94,10 @@
                 document.getElementById('auto').value = "自动遍历";
             }
         }
+        funtion load(){
+            sleep(1)
+            inputP()
+        }
         window.onload = inputP()
     </script>
 
@@ -106,7 +110,7 @@
     <input type="button" onclick="return random()" value="随机">
     <input type="button" id="auto" onclick="return auto()" value="自动遍历">
     <input type="button" onclick="return selfAdd()" value="+1"><br>
-    下面是问题的答案：
+    下面是问题的答案：<br>
     <text id="content"></text>
 </body>
 
