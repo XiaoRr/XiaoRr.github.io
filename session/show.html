@@ -1,0 +1,377 @@
+<html>
+
+<head>
+    <title>基础搜索学习</title>
+    <link rel="stylesheet" type="text/css" href="./prism.css">
+    <link rel="stylesheet" type="text/css" href="./button.css">
+    <meta charset="utf-8" />
+    <style>
+
+        body {
+            font-size: 20px;
+        }
+        .wall,
+        .blink,
+        .visited,
+        .road,
+        .tmp {
+            width: 20px;
+            height: 20px;
+            overflow: hidden;
+        }
+
+        .wall {
+            background: rgb(95, 99, 119);
+            box-shadow: 2px 2px 3px #aaa;
+        }
+
+        tr:nth-child(odd) td:nth-child(odd) .wall {
+            background: rgb(72, 89, 105)
+        }
+
+        #mazeBody {
+            border-collapse: separate;
+            font-size: 12px;
+            margin:auto;
+        }
+
+        .test_box {
+            min-width: 400px;
+            height: 740px;
+            display: flex;
+        }
+
+        pre {
+            word-wrap: normal;
+            height: 700px;
+            width: 600px;
+            border: 1px solid black;
+            padding: 5px;
+            overflow: auto;
+            display: block;
+        }
+
+        #result {
+            flex: 1;
+            height: 100%;
+            border: solid 1px #bbbbbb;
+            justify-content: center;
+            /* 水平居中 */
+            align-items: center;
+            /* 垂直居中 */
+            
+        }
+
+        .blink {
+            animation-iteration-count: 1;
+            animation: blink 1s linear;
+        }
+
+        .visited {
+            background: #fffd93;
+        }
+
+        @-webkit-keyframes blink {
+            0% {
+                background: #f35626;
+            }
+
+            50% {
+                background: #feab3a;
+            }
+
+            100% {
+                background: #fffd93;
+            }
+        }
+
+
+        div .highlight{
+            animation-iteration-count: 1;
+            animation: highlight 2s linear;
+            background: #44f6fc;
+        }
+
+        @-webkit-keyframes highlight {
+            0% {
+                background: #fffd93;
+            }
+
+            50% {
+                background: #1ff8ff;
+            }
+
+            100% {
+                background: #44f6fc;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="test_box line-numbers">
+        <div id="code">
+            <pre id="pre" contenteditable class="language-js">
+            </pre>
+        </div>
+        <div id="result">
+            <table id="mazeBody">
+            </table>
+        </div>
+    </div>
+    <div class="settings">
+        <br/>
+        迷宫长：<input type="number" min = '5' max = '31' value='13' id='X' onchange="init()">
+        迷宫宽：<input type="number" min = '5' max = '31' value='13' id='Y' onchange="init()">
+        动画间隔： <input type="number" min = '10' max = '1000' value='50' id='speed'>
+        <br/>
+        <div class="button button-green" onClick="runCode()">运行</div>
+        <div class="button button-blue" onclick="init()">重新生成</div>
+        <div class="button button-red"onclick="reset()">清除路线</div>
+        <div class="button" onclick="addDFSCode()">深搜框架</div>
+        <div class="button" onclick="addBFSCode()">广搜框架</div>
+        <div class="button" onclick="addDFSCode2()">深搜带路径显示</div>
+        <div>
+                标记自己来到的坐标： visit(x,y);</br>
+                高亮搜索结果： highlight([{x,y},{x2,y2},...]);</br>
+                创建一个队列：var queue = new Queue();</br>
+                queue可用方法：isEmpty dequeue enqueue(T)</br>
+        </div>
+    </div>
+</body>
+
+<script>
+    var time = 0;
+    var timer = [];
+    init();
+
+    function dfs(x, y, wall) {
+        let pos = [{ x: 1, y: 0 }, { x: 0, y: 1 }, { x: -1, y: 0 }, { x: 0, y: -1 }];
+        if (x < 0 || x > X || y < 0 || y > Y) {
+            return;
+        }
+        var now = getP(x, y);
+        if (!now || now.className === 'road') {
+            return;
+        }
+        wall.className = now.className = 'road';
+        shuffleArray(pos);
+        pos.forEach(p => {
+            dfs(x + p.x * 2, y + p.y * 2, getP(x + p.x, y + p.y));
+        });
+    }
+
+    function id(x, y) {
+        return x + '_' + y;
+    }
+
+    function getP(x, y) {
+        return document.getElementById(id(x, y));
+    }
+
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    function getType(x, y) {
+        let el = getP(x,y);
+        if(el)return getP(x, y).className;
+        return 'null';
+    }
+
+    function setType(x, y, type) {
+        if(getP(x,y))
+            getP(x, y).className = type;
+    }
+
+    function visit(x, y) {
+        getP(x, y).className = 'tmp';
+        time += parseInt(document.getElementById('speed').value);
+        timer.push(setTimeout(() => { 
+            if(getType(x, y) !== 'hightlight')
+                setType(x, y, 'blink'); }, time));
+        timer.push(setTimeout(() => { if(getType(x, y)!== 'hightlight')
+                setType(x, y, 'visited'); } , time + 1000));
+    }
+
+    function init() {
+        let X = document.getElementById('X').value;
+        let Y = document.getElementById('Y').value;
+        X = Math.min(31 ,Math.max(X, 5));
+        Y = Math.min(31 ,Math.max(Y, 5));
+        if(X%2 == 0)X++;
+        if(Y%2 == 0)Y++;
+        reset();
+        var table = document.getElementById('mazeBody');
+        table.innerHTML = '';
+        for (var i = 0; i < X; i++) {
+            var tr = document.createElement("tr");
+            for (var j = 0; j < Y; j++) {
+                var td = document.createElement("td");
+                var btn = document.createElement("div");
+                btn.setAttribute('id', id(i, j));
+                btn.setAttribute('class', 'wall');
+                td.appendChild(btn);
+                tr.appendChild(td);
+            }
+            table.appendChild(tr);
+        }
+        dfs(1, 1, getP(1, 1))
+        start = getP(1, 0);
+        start.className = 'start';
+        start.innerHTML = '🙄';
+        end = getP(X - 2, Y - 1);
+        end.className = 'end';
+        end.innerHTML = '⛳';
+    }
+
+    function reset() {
+        timer.forEach(t => {
+            clearInterval(t);
+        });
+        for (var i = 0; i < 31; i++) {
+            for (var j = 0; j < 31; j++) {
+                if (['wall', 'start', 'end'].indexOf(getType(i, j)) == -1) {
+                    setType(i, j, 'road');
+                }
+            }
+        }
+        time = 0;
+        timer = [];
+    }
+
+    function keyDown(el,keyCode){
+        event.initKeyboardEvent("keydown",true,true,document.defaultView,"a",0,keyCode,0);
+        el.dispatchEvent(event);
+    }
+
+    function addDFSCode() {
+        code = document.getElementById('pre');
+        code.innerHTML = '\
+dfs(1,1);\n\
+function dfs(x,y){\n\
+    if(getType(x,y)!==\'road\'){\n\
+        return;\n\
+    }\n\
+    visit(x,y);\n\
+    dfs(x-1,y);\n\
+    dfs(x+1,y);\n\
+    dfs(x,y-1);\n\
+    dfs(x,y+1);\n\
+}';
+        bililiteRange.fancyText(ret._el, Prism.highlightElement);
+    }
+
+    function addBFSCode() {
+        code = document.getElementById('pre');
+        code.innerHTML = '\
+bfs(1,1);\n\
+function bfs(x,y){\n\
+    var queue = new Queue();\n\
+    queue.enqueue({x:1,y:1});\n\
+    while(!queue.isEmpty()){\n\
+        var t = queue.dequeue();\n\
+        if(getType(t.x,t.y)!==\'road\'){\n\
+            continue;\n\
+        }\n\
+        visit(t.x,t.y);\n\
+        queue.enqueue({x:(t.x)-1,y:t.y});\n\
+        queue.enqueue({x:t.x+1,y:t.y});\n\
+        queue.enqueue({x:t.x,y:t.y-1});\n\
+        queue.enqueue({x:t.x,y:t.y+1});\n\
+    }\n\
+}';
+        bililiteRange.fancyText(ret._el, Prism.highlightElement);
+    }
+
+    function addDFSCode2() {
+        code = document.getElementById('pre');
+        code.innerHTML = '\
+let path = [];\n\
+let stop = false;\n\
+dfs(1,1,path);\n\
+function dfs(x,y,path){\n\
+    if(getType(x,y)===\'end\'){\n\
+        highlight(path);\n\
+        stop = true;\n\
+    }\n\
+    if(stop || getType(x,y)!==\'road\'){\n\
+        return;\n\
+    }\n\
+    path.push({x,y});\n\
+    visit(x,y);\n\
+    dfs(x-1,y,path);\n\
+    dfs(x+1,y,path);\n\
+    dfs(x,y-1,path);\n\
+    dfs(x,y+1,path);\n\
+    if(!stop)path.pop();\n\
+}';
+        bililiteRange.fancyText(ret._el, Prism.highlightElement);
+    }
+
+    function runCode() {
+        reset();
+        var code = document.querySelector('pre').innerText;
+        console.log(code);
+        eval(code);
+    }
+
+    // highlight some blocks, it only can use once when the algorithm finished because i havn't fix it.
+    function highlight(pos) {
+        //remove all highLight before next highlight
+        for (var i = 0; i < 31; i++) {
+            for (var j = 0; j < 31; j++) {
+                if (getType(i, j) === 'visited highlight') {
+                    setType(i, j, 'visited');
+                }
+                if (getType(i, j) === 'blink highlight') {
+                    setType(i, j, 'visited');
+                }               
+                if (getType(i, j) === 'road highlight') {
+                    setType(i, j, 'road');
+                }
+            }
+        }
+        timer.push(setTimeout( ()=> {
+            pos.forEach( p => {
+                setType(p.x, p.y, getType(p.x, p.y) +' highlight');
+            })
+        }, time+1200)); 
+    }
+</script>
+<script src="./prism.js" data-manual=""></script>
+<script src="./Prism Editor_files/prism.linenumber.js"></script>
+<script src="./Prism Editor_files/bililiteRange.js"></script>
+<script src="./Prism Editor_files/bililiteRange.undo.js"></script>
+<script src="./Prism Editor_files/bililiteRange.util.js"></script>
+<script src="./Prism Editor_files/bililiteRange.fancytext.js"></script>
+<script src="./Queue.js"></script>
+<script>
+    var editor = document.querySelector('pre');
+    const ret = bililiteRange(editor)
+    bililiteRange.fancyText(ret._el, Prism.highlightElement);
+
+    // add the undo's
+    ret.undo(0).data().autoindent = true; // init
+    ret._el.addEventListener('keydown', function (evt) {
+        // control z
+        if (evt.ctrlKey && evt.which == 90) bililiteRange.undo(evt);
+        // control y
+        if (evt.ctrlKey && evt.which == 89) bililiteRange.redo(evt);
+        // tab
+        if (evt.which == 9) {
+            ret.sendkeys('{tab}');
+            var b = ret.bounds();
+            ret.bounds([b[0],b[1]]).select();
+            evt.returnValue = false;
+
+        }
+    });
+
+</script>
+
+</html>
