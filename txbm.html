@@ -1,268 +1,68 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-
 <head>
-    <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
-    <title>天下布魔公开招募计算器</title>
-    <meta name='keywords' content='天下布魔'>
-    <meta name='description' content='咕咕咕'>
+    <meta charset="UTF-8">
+    <title>网站迁移通知</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('https://s1.ax1x.com/2023/05/30/p9jqw60.md.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+            background-color: #f1f1f1;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-    <style type="text/css">
-        button {
-            height: 40px;
-            width: 100px;
-            font-size: large;
+        .container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            max-width: 800px;
+            height: 200px;
             border-radius: 10px;
-            margin: 6px 4px;
+            background-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            opacity: 0.9;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
 
-            box-shadow: 0 1px rgb(98,127,140);
+        p {
+            font-size: 2rem;
+            color: #444;
+            line-height: 1.5;
+            margin-top: 30px;
         }
-        .btn_normal{
-            color:rgb(80,80,109);
-            background-image: linear-gradient(rgb(255,255,255), rgb(240, 240, 240))
+
+        @media (max-width: 768px) {
+            p {
+                font-size: 1.5rem;
+            }
         }
-        .btn_clicked{
-            color:white;
-            background-image: linear-gradient(rgb(82, 179, 222), rgb(74, 163, 209))
-        }
-        .btn_reset{
-            width: 324px;
-            background-image: linear-gradient(#FFC0CB, #FFB6C1);
+
+        .hint {
+            font-size: 1rem;
+            color: #999;
+            margin-top: 10px;
         }
     </style>
-    <script type="text/javascript">
-        var tags = [];
-        var ans = [];
-	    window.onload = function(){
-            var arr = document.getElementsByClassName('btn_normal');
-            for(var i = 0;i<arr.length;i++){
-                arr[i].className = 'btn_normal';
-                arr[i].onclick = function(){
-                    if(this.className == 'btn_normal'){
-                        if(tags.length <= 5){
-                            this.className = 'btn_clicked';
-                            tags.push(this.innerHTML);
-                        }
-                    }
-                    else {
-                        this.className = 'btn_normal';
-                        for(let i=0;i<arr.length;i++){
-                            if(tags[i]==this.innerHTML){
-                                tags.splice(i,1);
-                                break;
-                            }
-                        }
-                    }
-                    ans = [];
-                    showChara([], 0);
-                    console.log(ans);
-                    reDrawTable();
-                    document.getElementById("foobar").style.display = "none";
-                }
-            } 
-        }
-        function reDrawTable() {
-            var tbody = document.getElementById('tbMain');
-            var trs = document.getElementsByTagName("tr");
-            for(var i = trs.length - 1; i > 0; i--) {
-                tbody.deleteRow(0);
-            }
-            for(var i = 0;i < ans.length; i++){
-                var trow = getDataRow(ans[i]);
-                tbody.appendChild(trow);
-            }
-        }
-
-        function getDataRow(data) {
-            var row = document.createElement('tr');
-	 
-            var tagCell = document.createElement('td');
-            tagCell.innerHTML = data[0].tags;
-            row.appendChild(tagCell);
-            
-            var nameCell = document.createElement('td');
-            var value = getValue(data);
-            nameCell.innerHTML = value;
-            row.appendChild(nameCell);
-
-            return row;
-        }
-        
-        function getValue(data) {
-            var value = "";
-            for(var i=0;i<data.length;i++) {
-                if(data[i].value[0].startsWith("3"))
-                    value += "<div style=\"color:#FFD700\">";
-                if(data[i].value[0].startsWith("2"))
-                    value += "<div style=\"color:#FF0000\">"; 
-                if(data[i].value[0].startsWith("1"))
-                    value += "<div style=\"color:#B0E0E6\">"; 
-                if(data[i].value[0].startsWith("0"))
-                    value += "<div style=\"color:#808080\">"; 
-                var data2 = "(" + data[i].value[1];
-                for(var j=2; j < data[i].value.length; j++ ){
-                    data2 += ", " + data[i].value[j];
-                }
-                value += data[i].value[0] + data2 + ")</div>"
-            }
-            return value;
-        }
-
-        function reset() {
-            console.log('reset');
-            var arr = document.getElementsByClassName('btn_clicked');
-            while(arr.length != 0) {
-                arr[0].className = 'btn_normal';
-            }
-        }
-
-        function showChara(choosedTags, p) {
-            if(choosedTags.length == 3 || p == tags.length){
-                findChara(choosedTags);
-                return;
-            }
-            choosedTags.push(tags[p]);
-            showChara(choosedTags, p+1);
-            choosedTags.pop();
-            showChara(choosedTags, p+1);
-        }
-
-        function findChara(tags) {
-            // console.log(tags);
-            var tmpAns = []
-            dataset.forEach(function(value, key, arr){
-                if(isContain(value, tags)){
-                    var tmp = {}
-                    tmp.tags = [...tags];
-                    tmp.value = value;
-                    tmpAns.push(tmp);
-                }       
-            })
-            if(tmpAns.length != 0) {
-                ans.push(tmpAns);
-            }
-        }
-
-        function isContain(arr1,arr2){
-            if(arr2.length == 0)return false;
-            var isLV3 = arr2.includes("领袖");
-            var isLV2 = arr2.includes("精锐");
-            for (var i = arr2.length - 1; i >= 0; i--) {  
-                if(!isLV3 && arr1.includes("领袖")){
-                    return false;
-                }
-                if(!arr1.includes(arr2[i])){  
-                    return false;  
-                }  
-            }  
-            return true;  
-        } 
-
-        function collectWords() {
-            var clickedBtns = document.getElementsByClassName('btn_clicked');
-            tags = [];
-            for(var i=0;i<clickedBtns.length;i++) {
-                tags.push(clickedBtns[i].innerHTML);
-            }
-            return tags;
-        }
-
-        var dataset = [
-            ["3☆魔王 巴尔", "火属性", "攻击者", "魔族", "魔王军", "爆发", "领袖"],
-            ["3☆魔王 伊布力斯", "光属性", "攻击者", "魔族", "魔王军", "生存力", "回复", "领袖" ],
-            ["3☆精灵王 赛露西亚", "风属性", "辅助者", "亚人", "妖精王国", "爆发", "领袖" ],
-            ["3☆法斯公主 露露", "风属性", "治疗者", "人类", "法斯帝国", "回复", "领袖" ],
-            ["3☆魔王 撒旦", "暗属性", "守护者", "魔族", "魔王军", "生存力", "领袖" ],
-            ["3☆矮人王 兰儿", "水属性", "攻击者", "亚人", "PR", "小体型", "矮人国", "领袖" ],
-            ["2☆女忍者 凛月", "风属性", "攻击者", "人类", "MR", "烈日国", "输出", "群体攻击", "精锐" ],
-            ["2☆魔管家 艾可", "暗属性", "辅助者", "魔族", "MR", "魔王军", "回复", "支援", "精锐" ],
-            ["2☆圣骑士长 雷欧娜", "水属性", "守护者", "人类", "中体型", "圣光骑士团", "生存力", "精锐" ],
-            ["2☆神官长 菲欧菈", "光属性", "治疗者", "人类", "主神教团", "回复", "精锐" ],
-            ["2☆天才女军师 布兰妮", "光属性", "妨碍者", "人类", "MR", "法斯帝国", "群体攻击", "精锐" ],
-            ["2☆妖狐 静", "水属性", "妨碍者", "亚人", "MR", "烈日国", "精锐" ],
-            ["2☆大将军 朱诺安", "暗属性", "攻击者", "人类", "法斯帝国", "输出", "精锐" ],
-            ["2☆剑圣 神无雪", "火属性", "攻击者", "亚人", "MR", "烈日国", "越战越强", "精锐" ],
-            ["1☆流浪魔法师 尤依", "火属性", "攻击者", "人类", "JR", "魔王军", "越战越强", "输出" ],
-            ["1☆龙女 伊维斯", "火属性", "攻击者", "亚人", "PR", "小体型", "魔王军", "越战越强", "群体攻击", "输出" ],
-            ["1☆猫妖 娜娜", "风属性", "攻击者", "魔族", "PR", "小体型", "魔王军", "输出" ],
-            ["1☆美人鱼 玛莲", "水属性", "治疗者", "亚人", "MR", "中体型", "回复" ],
-            ["1☆犬人族 朵拉", "风属性", "守护者", "亚人", "MR", "保护", "生存力" ],
-            ["1☆双蛇军团护士长 艾琳", "光属性", "治疗者", "人类", "JR", "中体型", "双蛇军团", "回复" ],
-            ["1☆魅魔 撒芭丝", "暗属性", "妨碍者", "魔族", "MR", "干扰", "削弱" ],
-            ["1☆暗黑精灵 索拉卡", "暗属性", "妨碍者", "亚人", "中体型", "魔王军", "削弱" ],
-            ["0☆法斯帝国法师 佩托拉", "光属性", "攻击者", "人类", "PR", "中体型", "法斯帝国", "群体攻击", "输出" ],
-            ["0☆矮人战士 可儿", "水属性", "攻击者", "亚人", "PR", "小体型", "矮人国", "输出", "爆发" ],
-            ["0☆精灵射手 奥菈", "风属性", "攻击者", "亚人", "MR", "中体型", "妖精王国", "输出", "士兵" ],
-            ["0☆魔族法师 玛努艾拉", "暗属性", "攻击者", "魔族", "MR", "输出" ],
-            ["0☆烈日国武士 桔梗", "火属性", "妨碍者", "人类", "MR", "烈日国", "削弱", "输出" ],
-            ["0☆蛇女 拉米亚", "火属性", "妨碍者", "MR", "中体型", "干扰" ],
-            ["0☆史莱姆娘 萝尔", "水属性", "妨碍者", "魔族", "MR", "小体型", "削弱", "生存力" ],
-            ["0☆鸟身女妖 哈比", "风属性", "妨碍者", "魔族", "MR", "中体型", "干扰"],
-            ["0☆法斯帝国士兵 赛莲", "暗属性", "守护者", "人类", "MR", "中体型", "法斯帝国", "保护", "防御", "士兵" ],
-            ["0☆牛女 米诺", "风属性", "守护者", "亚人", "JR", "干扰", "保护", "防御", "士兵" ],
-            ["0☆魔族战士 芙蕾", "光属性", "守护者", "魔族", "MR", "中体型", "保护", "士兵" ],
-            ["0☆圣光骑士 玛蒂娜", "光属性", "守护者", "人类", "MR", "中体型", "圣光骑士团", "保护", "生存力", "防御", "士兵" ],
-            ["0☆双蛇军团士兵 夏琳", "火属性", "守护者", "人类", "MR", "中体型", "双蛇军团", "防御", "群体攻击", "保护" ],
-            ["0☆烈日国巫女 枫", "风属性", "治疗者", "人类", "MR", "中体型", "烈日国", "回复", "越战越强" ],
-            ["0☆主神教团僧兵 克蕾雅", "光属性", "治疗者", "人类", "MR", "中体型", "主神教团", "回复" ]
-        ]
-    </script>
-
-<body style="background:#F8F8FF">
-    <h1>天下布魔公开招募计算器 Ver1.0</h1>
-
-    <button type="button" class="btn_normal">攻击者</button>
-    <button type="button" class="btn_normal">守护者</button>
-    <button type="button" class="btn_normal">辅助者</button>
-    <button type="button" class="btn_normal">治疗者</button>
-    <button type="button" class="btn_normal">妨碍者</button><br>
-    <button type="button" class="btn_normal">魔族</button>
-    <button type="button" class="btn_normal">亚人</button>
-    <button type="button" class="btn_normal">人类</button><br>
-    <button type="button" class="btn_normal">PR</button>
-    <button type="button" class="btn_normal">MR</button>
-    <button type="button" class="btn_normal">JR</button><br>
-    <button type="button" class="btn_normal">小体型</button>
-    <button type="button" class="btn_normal">中体型</button><br>
-    <button type="button" class="btn_normal">爆发</button>
-    <button type="button" class="btn_normal">回复</button>
-    <button type="button" class="btn_normal">输出</button>
-    <button type="button" class="btn_normal">削弱</button>
-    <button type="button" class="btn_normal">干扰</button>
-    <button type="button" class="btn_normal">保护</button>
-    <button type="button" class="btn_normal">生存力</button>
-    <button type="button" class="btn_normal">群体攻击</button>
-    <button type="button" class="btn_normal">越战越强</button><br>
-    <button type="button" class="btn_normal">火属性</button>
-    <button type="button" class="btn_normal">风属性</button>
-    <button type="button" class="btn_normal">暗属性</button>
-    <button type="button" class="btn_normal">光属性</button>
-    <button type="button" class="btn_normal">水属性</button><br>
-    <button type="button" class="btn_normal">领袖</button>
-    <button type="button" class="btn_normal">精锐</button>
-    <button type="button" class="btn_reset" onclick="reset()">重置选择</button><br>
-
-    <table border="1" cellspacing="0">
-        <thead>
-           <tr>
-              <th>选择</th>
-              <th>角色清单</th>
-           </tr> 
-        </thead>
-        <tbody id="tbMain"></tbody>
-     </table>
-    
-    <div id="foobar">
-        给出你的tag，帮你计算能获得什么角色<br>
-        图一乐，因为这游戏根本没几个词缀，只是能让你知道你会出哪个1星<br>
-        刚发布可能有问题，有错误联系qq 418648118<br>
-        计算每个角色专属词缀，开发中<br>
-        如果招募时间太短，会随机删除词缀<br>
-        我没有出过领袖词缀，可能有问题<br>
-        如果同时可能获得高星和低星，至少我没见过高星出现，所以最好认为只会出低词<br>
-        最多选择5个词缀，8词暂不支持<br>
+</head>
+<body>
+<div class="container">
+    <p>本网站已迁移至 <a href="https://txbm.xyz/">txbm.xyz</a>。</p>
+    <div class="hint">本页面将于6月1日0点到期。届时txbm.online将不可访问。<br/>在百度搜索正确收录之前，百度搜索将不可用。
     </div>
-    
+</div>
 </body>
-
 </html>
